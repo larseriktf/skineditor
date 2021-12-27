@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SkindojoApplicationTests {
 
 	@Test
-	void contextLoads() {
+	public void greeterSaysBruh() {
+		String word = "bruh";
+		org.junit.jupiter.api.Assertions.assertEquals("bruh", word);
 	}
 
 }

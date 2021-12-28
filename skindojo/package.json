@@ -1,0 +1,29 @@
+{
+  "name": "skindojo",
+  "version": "1.0.0",
+  "description": "A simple skin editor for Minecraft",
+  "main": "main.js",
+  "scripts": {
+    "test": "test",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/larseriktf/skineditor.git"
+  },
+  "keywords": [
+    "skineditor",
+    "minecraft",
+    "open",
+    "source"
+  ],
+  "author": "Lars Erik Faber",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/larseriktf/skineditor/issues"
+  },
+  "homepage": "https://github.com/larseriktf/skineditor#readme",
+  "devDependencies": {
+    "electron": "^16.0.5"
+  }
+}

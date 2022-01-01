@@ -1,0 +1,18 @@
+.menu-bar {
+    display: flex;
+    flex-direction: horizontal;
+    background: $primary;
+    overflow: hidden;
+}
+
+.menu-bar-button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin: 0;
+    color: darken($secondary, 10%);
+
+    &:hover {
+        background: lighten($primary, 10%);
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": false,
+    "overrides": [
+        {
+            "files": "*.test.js",
+            "options": {
+                "semi": true
+            }
+        },
+        {
+            "files": ["*.js", "*.ts", "*.tsx"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
+}

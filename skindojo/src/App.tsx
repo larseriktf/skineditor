@@ -1,9 +1,17 @@
-import { Header } from "./components/Header"
+import { Canvas } from "./components/Canvas"
+import { Colorpicker } from "./components/Colorpicker"
+import { Menubar } from "./components/Menubar"
+import { Toolbox } from "./components/Toolbox"
+import { Viewbox } from "./components/Viewbox"
 
 function App() {
   return (
-    <div className="App">
-      <Header />
+    <div id="main-grid">
+      <Menubar />
+      <Toolbox />
+      <Canvas />
+      <Viewbox />
+      <Colorpicker />
     </div>
   )
 }

@@ -12,3 +12,24 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
 }
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+#main-grid {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-columns: auto 1fr 400px;
+    grid-template-rows: auto 1fr 300px;
+    grid-template-areas:
+        "menu menu menu"
+        "toolbox canvas viewbox"
+        "toolbox colorpicker colorpicker";
+}
+
+#canv {
+    background: white;
+}

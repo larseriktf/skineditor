@@ -1,4 +1,4 @@
-export const Header = () => {
+export const Menubar = () => {
   return (
     <header className="menu-bar">
       <button className="menu-bar-button">File</button>

@@ -1,8 +1,9 @@
 .menu-bar {
     display: flex;
-    flex-direction: horizontal;
+    flex-direction: row;
     background: $primary;
     overflow: hidden;
+    grid-area: menu;
 }
 
 .menu-bar-button {

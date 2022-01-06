@@ -1,4 +1,10 @@
 .canvas {
     grid-area: canvas;
-    background: red;
+}
+
+#canv {
+    image-rendering: pixelated;
+    width: 512px;
+    height: 512px;
+    margin-left: 200px;
 }

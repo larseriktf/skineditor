@@ -16,23 +16,23 @@ export const Canvas = () => {
     canvas.id = "canv"
 
     const context = canvas.getContext("2d")!
-    context.scale(1, 1)
     context.strokeStyle = "black"
     context.lineWidth = 1
     contextRef.current = context
   }, [])
 
-  const startDrawing = ({ nativeEvent }: Events) => {
-    const context = contextRef.current!
+  const getRealCoordinates = (mouseEvent: MouseEvent) => {
     const canvas = canvasRef.current!
+    let { offsetX, offsetY } = mouseEvent
 
-    let { offsetX, offsetY } = nativeEvent
-    console.log("before: " + offsetX)
     offsetX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)
     offsetY = Math.floor((canvas.height * offsetY) / canvas.clientHeight)
-    console.log("after: " + offsetX)
-    console.log("client: " + canvas.clientHeight)
-    console.log("real: " + canvas.height)
+    return { offsetX, offsetY }
+  }
+
+  const startDrawing = ({ nativeEvent }: Events) => {
+    const context = contextRef.current!
+    const { offsetX, offsetY } = getRealCoordinates(nativeEvent)
 
     context.beginPath()
     context.moveTo(offsetX, offsetY)
@@ -49,19 +49,11 @@ export const Canvas = () => {
   const draw = ({ nativeEvent }: Events) => {
     if (!isDrawing) return
 
-    const canvas = canvasRef.current!
     const context = contextRef.current!
-    const rect = canvas.getBoundingClientRect()
-
-    let { offsetX, offsetY } = nativeEvent
-    offsetX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)
-    offsetY = Math.floor((canvas.height * offsetY) / canvas.clientHeight)
+    const { offsetX, offsetY } = getRealCoordinates(nativeEvent)
 
     context.lineTo(offsetX, offsetY)
     context.stroke()
-
-    // console.log(rect.top, rect.right, rect.bottom, rect.left)
-    // console.log(offsetX, offsetY)
   }
 
   return (

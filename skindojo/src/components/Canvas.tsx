@@ -29,12 +29,26 @@ export const Canvas = () => {
 
     contextRef.current = canvas.getContext("2d")!
 
-    setOutlineSize((canvas.clientWidth / canvas.width) * 2)
+    setOutlineSize(canvas.clientWidth / canvas.width)
 
     hideOutline()
   }, [])
 
-  const startDrawing = () => {
+  const getRealCoordinates = (event: MouseEvent) => {
+    const canvas = canvasRef.current!
+    let { offsetX, offsetY } = event
+
+    offsetX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)
+    offsetY = Math.floor((canvas.height * offsetY) / canvas.clientHeight)
+
+    return { offsetX, offsetY }
+  }
+
+  const startDrawing = ({ nativeEvent }: Events) => {
+    let { offsetX, offsetY } = getRealCoordinates(nativeEvent)
+
+    // Draw initial pixel
+    draw(offsetX, offsetY)
     setIsDrawing(true)
   }
 
@@ -64,8 +78,8 @@ export const Canvas = () => {
 
     showOutline()
     setOutlineCoords([
-      Math.ceil(offsetX / width) * width - outlineSize / 2,
-      Math.ceil(offsetY / height) * height - outlineSize / 2,
+      (Math.ceil((offsetX / width) * 2) * width) / 2 - outlineSize / 2,
+      (Math.ceil((offsetY / height) * 2) * height) / 2 - outlineSize / 2,
     ])
 
     offsetX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)

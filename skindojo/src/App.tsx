@@ -9,7 +9,7 @@ function App() {
     <div id="main-grid">
       <Menubar />
       <Toolbox />
-      <Canvas />
+      <Canvas width={32} height={32} color={"red"} />
       <Viewbox />
       <Colorpicker />
     </div>

@@ -1,10 +1,16 @@
 import { useRef, useState, useEffect } from "react"
 
-interface Events {
+interface IProps {
+  width: number
+  height: number
+  color: string
+}
+
+interface IEvents {
   nativeEvent: MouseEvent
 }
 
-export const Canvas = () => {
+export const Canvas = ({ width, height, color }: IProps) => {
   // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
@@ -17,8 +23,6 @@ export const Canvas = () => {
 
   // Variables
   const drawnPixels: Array<[number, number]> = []
-  const width = 32
-  const height = 32
 
   useEffect(() => {
     // setup Refs
@@ -32,23 +36,14 @@ export const Canvas = () => {
     setOutlineSize(canvas.clientWidth / canvas.width)
 
     hideOutline()
-  }, [])
+  }, [height, width])
 
-  const getRealCoordinates = (event: MouseEvent) => {
-    const canvas = canvasRef.current!
-    let { offsetX, offsetY } = event
-
-    offsetX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)
-    offsetY = Math.floor((canvas.height * offsetY) / canvas.clientHeight)
-
-    return { offsetX, offsetY }
-  }
-
-  const startDrawing = ({ nativeEvent }: Events) => {
-    let { offsetX, offsetY } = getRealCoordinates(nativeEvent)
+  const startDrawing = ({ nativeEvent }: IEvents) => {
+    let { offsetX, offsetY } = nativeEvent
+    const { realX, realY } = getRealCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
-    draw(offsetX, offsetY)
+    draw(realX, realY)
     setIsDrawing(true)
   }
 
@@ -59,34 +54,41 @@ export const Canvas = () => {
   }
 
   const draw = (x: number, y: number) => {
-    const context = contextRef.current!
-
     // Prevents drawing the same pixel multiple times
     for (const pixel of drawnPixels) {
       if (pixel.toString() === [x, y].toString()) return
     }
+
+    const context = contextRef.current!
+
     // Draw pixel
-    context.fillStyle = "red"
+    context.fillStyle = color
     context.fillRect(x, y, 1, 1)
     // Add pixel to array
     drawnPixels.push([x, y])
   }
 
-  const moveCursor = ({ nativeEvent }: Events) => {
+  const getRealCoordinates = (offsetX: number, offsetY: number) => {
     const canvas = canvasRef.current!
-    let { offsetX, offsetY } = nativeEvent
+
+    const realX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)
+    const realY = Math.floor((canvas.height * offsetY) / canvas.clientHeight)
+
+    return { realX, realY }
+  }
+
+  const moveCursor = ({ nativeEvent }: IEvents) => {
+    const { offsetX, offsetY } = nativeEvent
+    const { realX, realY } = getRealCoordinates(offsetX, offsetY)
 
     showOutline()
     setOutlineCoords([
-      (Math.ceil((offsetX / width) * 2) * width) / 2 - outlineSize / 2,
-      (Math.ceil((offsetY / height) * 2) * height) / 2 - outlineSize / 2,
+      (Math.floor((offsetX / width) * 2) * width) / 2 + outlineSize / 2,
+      (Math.floor((offsetY / height) * 2) * height) / 2 + outlineSize / 2,
     ])
 
-    offsetX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)
-    offsetY = Math.floor((canvas.height * offsetY) / canvas.clientHeight)
-
     // Draw
-    if (isDrawing) draw(offsetX, offsetY)
+    if (isDrawing) draw(realX, realY)
   }
 
   const showOutline = () => setOutlineVisibility("visible")
@@ -103,8 +105,8 @@ export const Canvas = () => {
               visibility: outlineVisibility,
               left: outlineCoords[0],
               top: outlineCoords[1],
-              width: outlineSize + "px",
-              height: outlineSize + "px",
+              width: outlineSize,
+              height: outlineSize,
             } as React.CSSProperties
           }
         />

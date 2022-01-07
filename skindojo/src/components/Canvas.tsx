@@ -32,6 +32,8 @@ export const Canvas = ({ width, height, color }: IProps) => {
     canvas.id = "canv"
 
     contextRef.current = canvas.getContext("2d")!
+    // contextRef.current!.translate(0.5, 0.5)
+    // contextRef.current!.imageSmoothingEnabled = false
 
     setOutlineSize(canvas.clientWidth / canvas.width)
 
@@ -39,7 +41,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
   }, [height, width])
 
   const startDrawing = ({ nativeEvent }: IEvents) => {
-    let { offsetX, offsetY } = nativeEvent
+    const { offsetX, offsetY } = nativeEvent
     const { realX, realY } = getRealCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
@@ -49,6 +51,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
   const stopDrawing = () => {
     setIsDrawing(false)
+
     // clears array
     drawnPixels.length = 0
   }
@@ -64,15 +67,16 @@ export const Canvas = ({ width, height, color }: IProps) => {
     // Draw pixel
     context.fillStyle = color
     context.fillRect(x, y, 1, 1)
+
     // Add pixel to array
     drawnPixels.push([x, y])
   }
 
-  const getRealCoordinates = (offsetX: number, offsetY: number) => {
+  const getRealCoordinates = (x: number, y: number) => {
     const canvas = canvasRef.current!
 
-    const realX = Math.floor((canvas.width * offsetX) / canvas.clientWidth)
-    const realY = Math.floor((canvas.height * offsetY) / canvas.clientHeight)
+    const realX = Math.floor((canvas.width * x) / canvas.clientWidth)
+    const realY = Math.floor((canvas.height * y) / canvas.clientHeight)
 
     return { realX, realY }
   }

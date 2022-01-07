@@ -21,9 +21,6 @@ export const Canvas = ({ width, height, color }: IProps) => {
   const [outlineVisibility, setOutlineVisibility] = useState("hidden")
   const [outlineSize, setOutlineSize] = useState(10)
 
-  // Variables
-  const drawnPixels: Array<[number, number]> = []
-
   useEffect(() => {
     // setup Refs
     const canvas = canvasRef.current!
@@ -38,6 +35,10 @@ export const Canvas = ({ width, height, color }: IProps) => {
     setOutlineSize(canvas.clientWidth / canvas.width)
 
     hideOutline()
+
+    // Testing
+    draw(4, 4)
+    draw(4, 8)
   }, [height, width])
 
   const startDrawing = ({ nativeEvent }: IEvents) => {
@@ -51,25 +52,14 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
   const stopDrawing = () => {
     setIsDrawing(false)
-
-    // clears array
-    drawnPixels.length = 0
   }
 
   const draw = (x: number, y: number) => {
-    // Prevents drawing the same pixel multiple times
-    for (const pixel of drawnPixels) {
-      if (pixel.toString() === [x, y].toString()) return
-    }
-
     const context = contextRef.current!
 
     // Draw pixel
     context.fillStyle = color
     context.fillRect(x, y, 1, 1)
-
-    // Add pixel to array
-    drawnPixels.push([x, y])
   }
 
   const getRealCoordinates = (x: number, y: number) => {

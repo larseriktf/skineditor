@@ -2,9 +2,22 @@
     grid-area: canvas;
 }
 
-#canv {
-    image-rendering: pixelated;
+.canvasWrapper {
+    position: relative;
     width: 512px;
     height: 512px;
     margin-left: 200px;
+}
+
+#canv {
+    image-rendering: pixelated;
+    width: 100%;
+    height: 100%;
+}
+
+#cursorOutline {
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px solid red;
+    transform: translate(-50%, -50%);
 }

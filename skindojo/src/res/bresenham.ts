@@ -1,16 +1,14 @@
 // Bresenham algorithm for drawing lines
+interface IPoint {
+  x: number
+  y: number
+}
 
 type drawCallback = (x: number, y: number, color: string) => void
 
-const plotlineLow = (
-  x0: number,
-  y0: number,
-  x1: number,
-  y1: number,
-  draw: drawCallback
-) => {
-  let deltaX = x1 - x0
-  let deltaY = y1 - y0
+const plotlineLow = (start: IPoint, end: IPoint, draw: drawCallback) => {
+  let deltaX = end.x - start.x
+  let deltaY = end.y - start.y
   let yi = 1
 
   if (deltaY < 0) {
@@ -19,14 +17,14 @@ const plotlineLow = (
   }
 
   let D = 2 * deltaY - deltaX
-  let y = y0
+  let y = start.y
 
   if (D > 0) {
     y = y + yi
     D = D + 2 * (deltaY - deltaX)
   } else D = D + 2 * deltaY
 
-  for (let x = x0 + 1; x < x1; x++) {
+  for (let x = start.x + 1; x < end.x; x++) {
     draw(x, y, "red")
 
     if (D > 0) {
@@ -36,15 +34,9 @@ const plotlineLow = (
   }
 }
 
-const plotlineHigh = (
-  x0: number,
-  y0: number,
-  x1: number,
-  y1: number,
-  draw: drawCallback
-) => {
-  let deltaX = x1 - x0
-  let deltaY = y1 - y0
+const plotlineHigh = (start: IPoint, end: IPoint, draw: drawCallback) => {
+  let deltaX = end.x - start.x
+  let deltaY = end.y - start.y
   let xi = 1
 
   if (deltaX < 0) {
@@ -52,14 +44,14 @@ const plotlineHigh = (
     deltaX = -deltaX
   }
   let D = 2 * deltaX - deltaY
-  let x = x0
+  let x = start.x
 
   if (D > 0) {
     x = x + xi
     D = D + 2 * (deltaX - deltaY)
   } else D = D + 2 * deltaX
 
-  for (let y = y0 + 1; y < y1; y++) {
+  for (let y = start.y + 1; y < end.y; y++) {
     draw(x, y, "red")
 
     if (D > 0) {
@@ -69,26 +61,20 @@ const plotlineHigh = (
   }
 }
 
-export const plotline = (
-  x0: number,
-  y0: number,
-  x1: number,
-  y1: number,
-  draw: drawCallback
-) => {
-  if (Math.abs(y1 - y0) < Math.abs(x1 - x0)) {
+export const plotline = (start: IPoint, end: IPoint, draw: drawCallback) => {
+  if (Math.abs(end.y - start.y) < Math.abs(end.x - start.x)) {
     // Horizontal
-    if (x0 < x1) {
-      plotlineLow(x0, y0, x1, y1, draw)
+    if (start.x < end.x) {
+      plotlineLow(start, end, draw)
     } else {
-      plotlineLow(x1, y1, x0, y0, draw)
+      plotlineLow(end, start, draw)
     }
   } else {
     // Vertical
-    if (y0 < y1) {
-      plotlineHigh(x0, y0, x1, y1, draw)
+    if (start.y < end.y) {
+      plotlineHigh(start, end, draw)
     } else {
-      plotlineHigh(x1, y1, x0, y0, draw)
+      plotlineHigh(end, start, draw)
     }
   }
 }

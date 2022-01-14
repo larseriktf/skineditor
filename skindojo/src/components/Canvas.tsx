@@ -21,11 +21,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
   const [outlineCoords, setOutlineCoords] = useState([0, 0])
   const [outlineVisibility, setOutlineVisibility] = useState("hidden")
   const [outlineSize, setOutlineSize] = useState(10)
-  const [prevX, setPrevX] = useState(-1)
-  const [prevY, setPrevY] = useState(-1)
-
-  // let prevX = -1
-  // let prevY = -1
+  const [prevPoint, setPrevPoint] = useState({ x: -1, y: -1 })
 
   useEffect(() => {
     // setup Refs
@@ -35,12 +31,6 @@ export const Canvas = ({ width, height, color }: IProps) => {
     setOutlineSize(canvas.clientWidth / canvas.width)
 
     hideOutline()
-
-    // draw(10, 10)
-    // draw(20, 16)
-    // draw(12, 23)
-    // draw(5, 18)
-    // draw(8, 12)
   }, [height, width])
 
   const startDrawing = ({ nativeEvent }: IEvents) => {
@@ -49,33 +39,25 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
     // Draw initial pixel
     drawPixel(realX, realY, "green")
+    setPrevPoint({ x: realX, y: realY })
     setIsDrawing(true)
   }
 
   const stopDrawing = () => {
     setIsDrawing(false)
-    setPrevX(-1)
-    setPrevY(-1)
-    // prevX = -1
-    // prevY = -1
+    setPrevPoint({ x: -1, y: -1 })
   }
 
   const draw = (x: number, y: number) => {
     // Implement checks to prevent multiple unecessary drawings
-    // Implement feature to fill unpainted gaps
-
     drawPixel(x, y, "blue")
 
     // Draw a line if previous X and Y are defined
-    console.log(prevX, prevY)
-    if (prevX !== -1 && prevY !== -1) {
-      plotline(prevX, prevY, x, y, drawPixel)
+    if (prevPoint.x !== -1 && prevPoint.y !== -1) {
+      plotline({ x: prevPoint.x, y: prevPoint.y }, { x, y }, drawPixel)
     }
 
-    setPrevX(x)
-    setPrevY(y)
-    // prevX = x
-    // prevY = y
+    setPrevPoint({ x: x, y: y })
   }
 
   const drawPixel = (x: number, y: number, bruh: string) => {

@@ -9,13 +9,10 @@ export const angleBetweenTwoPoints = (
   // Arctan formula
   const dy = ey - cy
   const dx = ex - cx
-  var theta = Math.atan2(dy, dx) // * -1
+  var theta = Math.atan2(dy, dx)
 
-  // From radians to degrees
-  theta *= 180 / Math.PI
-
-  // Convert to range [0, 360]
-  if (theta < 0) theta = 360 + theta
+  // Convert to range [0, 2 * Math.pi]
+  if (theta < 0) theta += 2 * Math.PI
 
   return theta
 }

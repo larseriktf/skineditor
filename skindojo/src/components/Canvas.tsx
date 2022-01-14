@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 import { angleBetweenTwoPoints } from "../res/calculation"
+import { plotline } from "../res/bresenham"
 
 interface IProps {
   width: number
@@ -29,10 +30,6 @@ export const Canvas = ({ width, height, color }: IProps) => {
   useEffect(() => {
     // setup Refs
     const canvas = canvasRef.current!
-    canvas.width = width
-    canvas.height = height
-    canvas.id = "canv"
-
     contextRef.current = canvas.getContext("2d")!
 
     setOutlineSize(canvas.clientWidth / canvas.width)
@@ -40,8 +37,8 @@ export const Canvas = ({ width, height, color }: IProps) => {
     hideOutline()
 
     // Testing
-    draw(5, 20)
-    draw(15, 15)
+    draw(0, 0) // p1
+    draw(20, 10) // p2
   }, [height, width])
 
   const startDrawing = ({ nativeEvent }: IEvents) => {
@@ -49,7 +46,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
     const { realX, realY } = getRealCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
-    drawPixel(realX, realY)
+    drawPixel(realX, realY, "green")
     setIsDrawing(true)
   }
 
@@ -61,7 +58,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
     // Implement checks to prevent multiple unecessary drawings
     // Implement feature to fill unpainted gaps
 
-    drawPixel(x, y)
+    drawPixel(x, y, "blue")
 
     // Draw a line if previous X and Y are defined
     if (prevX !== -1 && prevY !== -1) drawLine(prevX, prevY, x, y)
@@ -72,22 +69,25 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
   const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
     const angle = angleBetweenTwoPoints(x1, y1, x2, y2)
+    console.log(angle)
+
+    plotline(x1, y1, x2, y2, drawPixel)
 
     // Calculate for horizontal-ish lines
-    const amount = x2 - x1
+    // const deltaX = x2 - x1
+    // const deltaY = y2 - y1
 
-    for (let i = 1; i <= amount; i++) {
-      const x = x1 + i
-      const y = Math.floor(x * Math.sin(angle * -1)) + y1 + 2
-      drawPixel(x, y)
-    }
+    // for (let x = x1; x < x2; x++) {
+    //   const y = y1 + (deltaY * (x - x1)) / deltaX
+    //   drawPixel(x, y, "red")
+    // }
 
     // Calculate for vertical-ish lines
   }
 
-  const drawPixel = (x: number, y: number) => {
+  const drawPixel = (x: number, y: number, bruh: string) => {
     const context = contextRef.current!
-    context.fillStyle = color
+    context.fillStyle = bruh
     context.fillRect(x, y, 1, 1)
   }
 
@@ -133,6 +133,9 @@ export const Canvas = ({ width, height, color }: IProps) => {
           }
         />
         <canvas
+          id="canv"
+          width={width}
+          height={height}
           ref={canvasRef}
           onMouseDown={startDrawing}
           onMouseUp={stopDrawing}

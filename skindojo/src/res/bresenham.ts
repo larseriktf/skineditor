@@ -4,7 +4,7 @@ interface IPoint {
   y: number
 }
 
-type drawCallback = (x: number, y: number, color: string) => void
+type drawCallback = (x: number, y: number) => void
 
 const plotlineLow = (start: IPoint, end: IPoint, draw: drawCallback) => {
   let deltaX = end.x - start.x
@@ -25,7 +25,7 @@ const plotlineLow = (start: IPoint, end: IPoint, draw: drawCallback) => {
   } else D = D + 2 * deltaY
 
   for (let x = start.x + 1; x < end.x; x++) {
-    draw(x, y, "red")
+    draw(x, y)
 
     if (D > 0) {
       y = y + yi
@@ -52,7 +52,7 @@ const plotlineHigh = (start: IPoint, end: IPoint, draw: drawCallback) => {
   } else D = D + 2 * deltaX
 
   for (let y = start.y + 1; y < end.y; y++) {
-    draw(x, y, "red")
+    draw(x, y)
 
     if (D > 0) {
       x = x + xi

@@ -9,7 +9,7 @@ export const Skineditor = () => {
     <div id="main-grid">
       <Menubar />
       <Toolbox />
-      <Canvas width={32} height={32} color={"red"} />
+      <Canvas width={32} height={32} color={"green"} />
       <Viewbox />
       <Colorpicker />
     </div>

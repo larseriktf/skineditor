@@ -38,7 +38,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
     const { realX, realY } = getRealCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
-    drawPixel(realX, realY, "green")
+    drawPixel(realX, realY)
     setPrevPoint({ x: realX, y: realY })
     setIsDrawing(true)
   }
@@ -50,7 +50,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
   const draw = (x: number, y: number) => {
     // Implement checks to prevent multiple unecessary drawings
-    drawPixel(x, y, "blue")
+    drawPixel(x, y)
 
     // Draw a line if previous X and Y are defined
     if (prevPoint.x !== -1 && prevPoint.y !== -1) {
@@ -60,9 +60,9 @@ export const Canvas = ({ width, height, color }: IProps) => {
     setPrevPoint({ x: x, y: y })
   }
 
-  const drawPixel = (x: number, y: number, bruh: string) => {
+  const drawPixel = (x: number, y: number) => {
     const context = contextRef.current!
-    context.fillStyle = bruh
+    context.fillStyle = color
     context.fillRect(x, y, 1, 1)
   }
 

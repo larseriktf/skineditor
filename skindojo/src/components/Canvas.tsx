@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from "react"
-import { angleBetweenTwoPoints } from "../res/calculation"
 import { plotline } from "../res/bresenham"
 
 interface IProps {
@@ -22,10 +21,11 @@ export const Canvas = ({ width, height, color }: IProps) => {
   const [outlineCoords, setOutlineCoords] = useState([0, 0])
   const [outlineVisibility, setOutlineVisibility] = useState("hidden")
   const [outlineSize, setOutlineSize] = useState(10)
+  const [prevX, setPrevX] = useState(-1)
+  const [prevY, setPrevY] = useState(-1)
 
-  // Variables
-  let prevX = -1
-  let prevY = -1
+  // let prevX = -1
+  // let prevY = -1
 
   useEffect(() => {
     // setup Refs
@@ -36,9 +36,11 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
     hideOutline()
 
-    // Testing
-    draw(0, 0) // p1
-    draw(20, 10) // p2
+    // draw(10, 10)
+    // draw(20, 16)
+    // draw(12, 23)
+    // draw(5, 18)
+    // draw(8, 12)
   }, [height, width])
 
   const startDrawing = ({ nativeEvent }: IEvents) => {
@@ -52,6 +54,10 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
   const stopDrawing = () => {
     setIsDrawing(false)
+    setPrevX(-1)
+    setPrevY(-1)
+    // prevX = -1
+    // prevY = -1
   }
 
   const draw = (x: number, y: number) => {
@@ -61,28 +67,15 @@ export const Canvas = ({ width, height, color }: IProps) => {
     drawPixel(x, y, "blue")
 
     // Draw a line if previous X and Y are defined
-    if (prevX !== -1 && prevY !== -1) drawLine(prevX, prevY, x, y)
+    console.log(prevX, prevY)
+    if (prevX !== -1 && prevY !== -1) {
+      plotline(prevX, prevY, x, y, drawPixel)
+    }
 
-    prevX = x
-    prevY = y
-  }
-
-  const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
-    const angle = angleBetweenTwoPoints(x1, y1, x2, y2)
-    console.log(angle)
-
-    plotline(x1, y1, x2, y2, drawPixel)
-
-    // Calculate for horizontal-ish lines
-    // const deltaX = x2 - x1
-    // const deltaY = y2 - y1
-
-    // for (let x = x1; x < x2; x++) {
-    //   const y = y1 + (deltaY * (x - x1)) / deltaX
-    //   drawPixel(x, y, "red")
-    // }
-
-    // Calculate for vertical-ish lines
+    setPrevX(x)
+    setPrevY(y)
+    // prevX = x
+    // prevY = y
   }
 
   const drawPixel = (x: number, y: number, bruh: string) => {

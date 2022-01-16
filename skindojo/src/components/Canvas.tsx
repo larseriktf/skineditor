@@ -18,28 +18,33 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
   // States
   const [isDrawing, setIsDrawing] = useState(false)
-  const [outlineCoords, setOutlineCoords] = useState([0, 0])
   const [outlineVisibility, setOutlineVisibility] = useState("hidden")
-  const [outlineSize, setOutlineSize] = useState(10)
+  const [outlineSize, setOutlineSize] = useState({ width: 10, height: 10 })
+  const [outlineCoords, setOutlineCoords] = useState({ x: 0, y: 0 })
   const [prevPoint, setPrevPoint] = useState({ x: -1, y: -1 })
 
+  // Do Once
   useEffect(() => {
     // setup Refs
     const canvas = canvasRef.current!
     contextRef.current = canvas.getContext("2d")!
 
-    setOutlineSize(canvas.clientWidth / canvas.width)
+    setOutlineSize({
+      width: canvas.clientWidth / canvas.width,
+      height: canvas.clientHeight / canvas.height,
+    })
 
     hideOutline()
   }, [height, width])
 
+  // Functions
   const startDrawing = ({ nativeEvent }: IEvents) => {
     const { offsetX, offsetY } = nativeEvent
-    const { realX, realY } = getRealCoordinates(offsetX, offsetY)
+    const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
-    drawPixel(realX, realY)
-    setPrevPoint({ x: realX, y: realY })
+    drawPixel(canvasX, canvasY)
+    setPrevPoint({ x: canvasX, y: canvasY })
     setIsDrawing(true)
   }
 
@@ -66,26 +71,26 @@ export const Canvas = ({ width, height, color }: IProps) => {
     context.fillRect(x, y, 1, 1)
   }
 
-  const getRealCoordinates = (x: number, y: number) => {
+  const getcanvasCoordinates = (x: number, y: number) => {
     const canvas = canvasRef.current!
-    const realX = Math.floor((canvas.width * x) / canvas.clientWidth)
-    const realY = Math.floor((canvas.height * y) / canvas.clientHeight)
+    const canvasX = Math.floor((canvas.width * x) / canvas.clientWidth)
+    const canvasY = Math.floor((canvas.height * y) / canvas.clientHeight)
 
-    return { realX, realY }
+    return { canvasX, canvasY }
   }
 
   const moveCursor = ({ nativeEvent }: IEvents) => {
     const { offsetX, offsetY } = nativeEvent
-    const { realX, realY } = getRealCoordinates(offsetX, offsetY)
+    const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
 
     showOutline()
-    setOutlineCoords([
-      (Math.floor((offsetX / width) * 2) * width + outlineSize) / 2,
-      (Math.floor((offsetY / height) * 2) * height + outlineSize) / 2,
-    ])
+    setOutlineCoords({
+      x: (Math.floor((offsetX / width) * 2) * width + outlineSize.width) / 2,
+      y: (Math.floor((offsetY / height) * 2) * height + outlineSize.height) / 2,
+    })
 
     // Draw
-    if (isDrawing) draw(realX, realY)
+    if (isDrawing) draw(canvasX, canvasY)
   }
 
   const showOutline = () => setOutlineVisibility("visible")
@@ -100,10 +105,10 @@ export const Canvas = ({ width, height, color }: IProps) => {
           style={
             {
               visibility: outlineVisibility,
-              left: outlineCoords[0],
-              top: outlineCoords[1],
-              width: outlineSize,
-              height: outlineSize,
+              left: outlineCoords.x,
+              top: outlineCoords.y,
+              width: outlineSize.width,
+              height: outlineSize.height,
             } as React.CSSProperties
           }
         />

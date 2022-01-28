@@ -43,30 +43,40 @@ export const Colorpicker = ({ setColor }: IProps) => {
 
   return (
     <section className="colorpicker">
-      <p className="label">Red</p>
-      <input
-        type="text"
-        pattern="[0-9]*"
-        value={RGB.R}
-        onChange={updateRGB}
-        name="R"
-      />
-      <p className="label">Green</p>
-      <input
-        type="text"
-        pattern="[0-9]*"
-        value={RGB.G}
-        onChange={updateRGB}
-        name="G"
-      />
-      <p className="label">Blue</p>
-      <input
-        type="text"
-        pattern="[0-9]*"
-        value={RGB.B}
-        onChange={updateRGB}
-        name="B"
-      />
+      <div className="gradient-picker">
+        <p className="label">Colorpicker</p>
+        <div />
+      </div>
+      <div className="hue-picker">
+        <p className="label">Hue</p>
+        <div />
+      </div>
+      <div className="rgb-picker">
+        <p className="label">Red</p>
+        <input
+          type="text"
+          pattern="[0-9]*"
+          value={RGB.R}
+          onChange={updateRGB}
+          name="R"
+        />
+        <p className="label">Green</p>
+        <input
+          type="text"
+          pattern="[0-9]*"
+          value={RGB.G}
+          onChange={updateRGB}
+          name="G"
+        />
+        <p className="label">Blue</p>
+        <input
+          type="text"
+          pattern="[0-9]*"
+          value={RGB.B}
+          onChange={updateRGB}
+          name="B"
+        />
+      </div>
     </section>
   )
 }

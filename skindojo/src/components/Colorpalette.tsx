@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { PaletteColor } from "./PaletteColor"
 
-export const Colorpicker = () => {
+export const Colorpalette = () => {
   // States
 
   // Variables
@@ -60,25 +60,23 @@ export const Colorpicker = () => {
   let userDefinedPickers = 16
 
   return (
-    <section className="colorpicker">
-      <section className="palette">
-        <p className="label">Basic Colors</p>
-        <section className="palette-predefined">
-          {colorsPredefined.map((color) => (
-            <PaletteColor color={color} />
-          ))}
-        </section>
-        <p className="label">Custom Colors</p>
-        <section className="palette-user-defined">
-          {colorsUserDefined.map((color, index) => (
-            <PaletteColor color={color} key={index} />
-          ))}
-          {[...Array(userDefinedPickers - colorsUserDefined.length)].map(
-            (e, index) => (
-              <PaletteColor color="transparent" key={index} />
-            )
-          )}
-        </section>
+    <section className="palette">
+      <p className="label">Basic Colors</p>
+      <section className="palette-predefined">
+        {colorsPredefined.map((color) => (
+          <PaletteColor color={color} />
+        ))}
+      </section>
+      <p className="label">Custom Colors</p>
+      <section className="palette-user-defined">
+        {colorsUserDefined.map((color, index) => (
+          <PaletteColor color={color} key={index} />
+        ))}
+        {[...Array(userDefinedPickers - colorsUserDefined.length)].map(
+          (e, index) => (
+            <PaletteColor color="transparent" key={index} />
+          )
+        )}
       </section>
     </section>
   )

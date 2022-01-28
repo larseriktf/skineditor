@@ -2,7 +2,7 @@ import { Menubar } from "./Menubar"
 import { Toolbox } from "./Toolbox"
 import { Canvas } from "./Canvas"
 import { Viewbox } from "./Viewbox"
-import { Colorpicker } from "./Colorpicker"
+import { Color } from "./Color"
 
 export const Skineditor = () => {
   return (
@@ -11,7 +11,7 @@ export const Skineditor = () => {
       <Toolbox />
       <Canvas width={32} height={32} color={"green"} />
       <Viewbox />
-      <Colorpicker />
+      <Color />
     </div>
   )
 }

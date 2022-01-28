@@ -1,7 +1,25 @@
 import { useState } from "react"
 
-export const Colorpicker = () => {
+interface IProps {
+  setColor: React.Dispatch<React.SetStateAction<string>>
+}
+
+interface IRGB {
+  R: number
+  G: number
+  B: number
+}
+
+export const Colorpicker = ({ setColor }: IProps) => {
   const [RGB, setRGB] = useState({ R: 0, G: 0, B: 0 })
+
+  const numberToHex = (n: number) => {
+    const hex = n.toString(16)
+    return hex.length === 1 ? "0" + hex : hex
+  }
+
+  const rgbToHex = (rgb: IRGB) =>
+    "#" + numberToHex(rgb.R) + numberToHex(rgb.G) + numberToHex(rgb.B)
 
   const updateRGB = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Checks the validity of the pattern passed in the value of the input
@@ -12,10 +30,15 @@ export const Colorpicker = () => {
     if (value > 255) value = 255
     else if (value < 0) value = 0
 
+    let newRGB = RGB
+
     // Update RGB value
-    if (name === "R") setRGB({ ...RGB, R: value })
-    else if (name === "G") setRGB({ ...RGB, G: value })
-    else if (name === "B") setRGB({ ...RGB, B: value })
+    if (name === "R") newRGB = { ...RGB, R: value }
+    else if (name === "G") newRGB = { ...RGB, G: value }
+    else if (name === "B") newRGB = { ...RGB, B: value }
+
+    setRGB(newRGB)
+    setColor(rgbToHex(newRGB))
   }
 
   return (

@@ -12,7 +12,7 @@ export const Color = ({ color, setColor }: IProps) => {
     <section className="color">
       <SelectedColor color={color} />
       <Colorpalette setColor={setColor} />
-      <Colorpicker />
+      <Colorpicker setColor={setColor} />
     </section>
   )
 }

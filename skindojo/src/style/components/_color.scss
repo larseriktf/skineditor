@@ -1,5 +1,5 @@
-$gap: 10px;
-$picker-size: 32px;
+$gap: 5px;
+$picker-size: 25px;
 
 .color {
     grid-area: color;
@@ -65,8 +65,12 @@ $picker-size: 32px;
     padding: 10px;
 
     input {
-        background: gray;
         width: 50px;
         height: 20px;
+        background: $primary;
+        border: none;
+        color: darken($secondary, 10%);
+        direction: rtl;
+        margin-bottom: 10px;
     }
 }

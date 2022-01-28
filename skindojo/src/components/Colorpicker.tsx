@@ -11,7 +11,7 @@ interface IRGB {
 }
 
 export const Colorpicker = ({ setColor }: IProps) => {
-  const [RGB, setRGB] = useState({ R: 0, G: 0, B: 0 })
+  const [RGB, setRGB] = useState({ R: 255, G: 255, B: 255 })
 
   const numberToHex = (n: number) => {
     const hex = n.toString(16)

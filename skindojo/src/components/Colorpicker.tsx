@@ -1,7 +1,11 @@
+import { useState } from "react"
 import { PaletteColor } from "./PaletteColor"
 
 export const Colorpicker = () => {
-  const predefinedColors = [
+  // States
+
+  // Variables
+  const colorsPredefined = [
     "#FFFFFF",
     "#dfdfdf",
     "#bfbfbf",
@@ -52,12 +56,29 @@ export const Colorpicker = () => {
     "#440440",
   ]
 
+  const colorsUserDefined = ["#00c0be", "#00807e", "#004342", "#bdc1fb"]
+  let userDefinedPickers = 16
+
   return (
     <section className="colorpicker">
       <section className="palette">
-        {predefinedColors.map((color) => (
-          <PaletteColor color={color} />
-        ))}
+        <p className="label">Basic Colors</p>
+        <section className="palette-predefined">
+          {colorsPredefined.map((color) => (
+            <PaletteColor color={color} />
+          ))}
+        </section>
+        <p className="label">Custom Colors</p>
+        <section className="palette-user-defined">
+          {colorsUserDefined.map((color, index) => (
+            <PaletteColor color={color} key={index} />
+          ))}
+          {[...Array(userDefinedPickers - colorsUserDefined.length)].map(
+            (e, index) => (
+              <PaletteColor color="transparent" key={index} />
+            )
+          )}
+        </section>
       </section>
     </section>
   )

@@ -1,16 +1,50 @@
+$gap: 10px;
+$picker-size: 32px;
+
 .colorpicker {
     grid-area: colorpicker;
     background: darken($primary, 5%);
 }
 
 .palette {
-    width: 400px;
-    height: 300px;
-    display: flex;
-    background: darkgray;
+    width: 10000px;
+    height: 400px;
+    box-sizing: border-box;
+    padding: 10px;
 }
 
 .palette-color {
-    width: 10px;
-    height: 10px;
+    box-sizing: border-box;
+    border: 1px solid $primary;
+}
+
+.label {
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+    color: darken($secondary, 10%);
+}
+
+.palette-predefined {
+    $columns: 8;
+    $rows: 6;
+
+    display: grid;
+    grid-template-columns: repeat($columns, 1fr);
+    grid-template-rows: repeat($rows, 1fr);
+    grid-auto-flow: column;
+    grid-gap: $gap;
+    width: $columns * $picker-size + ($columns - 1) * $gap;
+    height: $rows * $picker-size + ($rows - 1) * $gap;
+}
+.palette-user-defined {
+    $columns: 8;
+    $rows: 2;
+
+    display: grid;
+    grid-template-columns: repeat($columns, 1fr);
+    grid-template-rows: repeat($rows, 1fr);
+    grid-gap: $gap;
+    width: $columns * $picker-size + ($columns - 1) * $gap;
+    height: $rows * $picker-size + ($rows - 1) * $gap;
 }

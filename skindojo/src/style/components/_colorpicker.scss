@@ -2,3 +2,15 @@
     grid-area: colorpicker;
     background: darken($primary, 5%);
 }
+
+.palette {
+    width: 400px;
+    height: 300px;
+    display: flex;
+    background: darkgray;
+}
+
+.palette-color {
+    width: 10px;
+    height: 10px;
+}

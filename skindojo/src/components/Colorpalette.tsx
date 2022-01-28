@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { PaletteColor } from "./PaletteColor"
-import colorsBasic from "../res/colors_predefined.json"
+import colorsBasic from "../res/colors_basic.json"
+import customColors from "../res/colors_custom.json"
 
 interface IProps {
   setColor: React.Dispatch<React.SetStateAction<string>>
@@ -8,28 +9,11 @@ interface IProps {
 
 export const Colorpalette = ({ setColor }: IProps) => {
   // States
-  const [colorsCustom, setColorsCustom] = useState([
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-    "transparent",
-  ])
+  const [colorsCustom, setColorsCustom] = useState(customColors)
 
   // Persistant data
   useEffect(() => {
-    //s Runs once the component loads
+    // Runs once the component loads
     const data = localStorage.getItem("colors-custom")
     if (data) setColorsCustom(JSON.parse(data))
   }, [])
@@ -47,7 +31,7 @@ export const Colorpalette = ({ setColor }: IProps) => {
   return (
     <section className="palette">
       <p className="label">Basic Colors</p>
-      <section className="palette-predefined">
+      <section className="palette-basic">
         {colorsBasic.map((color, index) => (
           <PaletteColor
             color={color}
@@ -58,7 +42,7 @@ export const Colorpalette = ({ setColor }: IProps) => {
         ))}
       </section>
       <p className="label">Custom Colors</p>
-      <section className="palette-user-defined">
+      <section className="palette-custom">
         {[...colorsCustom].reverse().map((color, index) => (
           <PaletteColor
             color={color}

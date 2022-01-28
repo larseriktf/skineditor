@@ -14,7 +14,7 @@ export const Skineditor = () => {
       <Toolbox />
       <Canvas width={32} height={32} color={color} />
       <Viewbox />
-      <Color setColor={setColor} />
+      <Color color={color} setColor={setColor} />
     </div>
   )
 }

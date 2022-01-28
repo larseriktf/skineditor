@@ -25,7 +25,7 @@ $picker-size: 32px;
     color: darken($secondary, 10%);
 }
 
-.palette-predefined {
+.palette-basic {
     $columns: 8;
     $rows: 6;
 
@@ -36,8 +36,9 @@ $picker-size: 32px;
     grid-gap: $gap;
     width: $columns * $picker-size + ($columns - 1) * $gap;
     height: $rows * $picker-size + ($rows - 1) * $gap;
+    margin-bottom: 10px;
 }
-.palette-user-defined {
+.palette-custom {
     $columns: 8;
     $rows: 2;
 
@@ -47,4 +48,14 @@ $picker-size: 32px;
     grid-gap: $gap;
     width: $columns * $picker-size + ($columns - 1) * $gap;
     height: $rows * $picker-size + ($rows - 1) * $gap;
+}
+
+.selected-color {
+    padding: 10px;
+
+    .selected-color-preview {
+        width: 50px;
+        height: 50px;
+        border: 2px solid $primary;
+    }
 }

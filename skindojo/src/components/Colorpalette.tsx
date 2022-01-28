@@ -1,7 +1,11 @@
 import { useState } from "react"
 import { PaletteColor } from "./PaletteColor"
 
-export const Colorpalette = () => {
+interface IProps {
+  setColor: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const Colorpalette = ({ setColor }: IProps) => {
   // States
 
   // Variables
@@ -64,17 +68,17 @@ export const Colorpalette = () => {
       <p className="label">Basic Colors</p>
       <section className="palette-predefined">
         {colorsPredefined.map((color) => (
-          <PaletteColor color={color} />
+          <PaletteColor color={color} setColor={setColor} />
         ))}
       </section>
       <p className="label">Custom Colors</p>
       <section className="palette-user-defined">
         {colorsUserDefined.map((color, index) => (
-          <PaletteColor color={color} key={index} />
+          <PaletteColor color={color} key={index} setColor={setColor} />
         ))}
         {[...Array(userDefinedPickers - colorsUserDefined.length)].map(
           (e, index) => (
-            <PaletteColor color="transparent" key={index} />
+            <PaletteColor color="transparent" key={index} setColor={setColor} />
           )
         )}
       </section>

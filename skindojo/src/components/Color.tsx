@@ -1,9 +1,13 @@
 import { Colorpalette } from "./Colorpalette"
 
-export const Color = () => {
+interface IProps {
+  setColor: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const Color = ({ setColor }: IProps) => {
   return (
     <section className="color">
-      <Colorpalette />
+      <Colorpalette setColor={setColor} />
     </section>
   )
 }

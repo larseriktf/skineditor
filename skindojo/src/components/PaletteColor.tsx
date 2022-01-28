@@ -1,11 +1,17 @@
 interface IProps {
   color: string
   setColor: React.Dispatch<React.SetStateAction<string>>
+  updateCustomColors: (color: string) => void
 }
 
-export const PaletteColor = ({ color, setColor }: IProps) => {
+export const PaletteColor = ({
+  color,
+  setColor,
+  updateCustomColors,
+}: IProps) => {
   const updateColor = () => {
     setColor(color)
+    updateCustomColors(color)
   }
 
   return (

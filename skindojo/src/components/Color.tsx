@@ -1,4 +1,5 @@
 import { Colorpalette } from "./Colorpalette"
+import { Colorpicker } from "./Colorpicker"
 import { SelectedColor } from "./SelectedColor"
 
 interface IProps {
@@ -11,6 +12,7 @@ export const Color = ({ color, setColor }: IProps) => {
     <section className="color">
       <SelectedColor color={color} />
       <Colorpalette setColor={setColor} />
+      <Colorpicker />
     </section>
   )
 }

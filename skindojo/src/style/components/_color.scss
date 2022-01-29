@@ -68,12 +68,9 @@ $picker-size: 25px;
         box-sizing: border-box;
         padding: 10px;
 
-        > div {
+        > canvas {
             width: 200px;
             height: 200px;
-            background-image: linear-gradient(0deg, black, transparent),
-                linear-gradient(270deg, red, transparent),
-                linear-gradient(90deg, white, transparent);
         }
     }
 

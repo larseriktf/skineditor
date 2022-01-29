@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 interface IProps {
   setColor: React.Dispatch<React.SetStateAction<string>>
@@ -10,8 +10,24 @@ interface IRGB {
   B: number
 }
 
+interface IMouseEvent {
+  nativeEvent: MouseEvent
+}
+
 export const Colorpicker = ({ setColor }: IProps) => {
+  // Refs
+  const gradientPickerRef = useRef<HTMLCanvasElement>(null)
+  const gradientPickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
+
+  // States
   const [RGB, setRGB] = useState({ R: 255, G: 255, B: 255 })
+
+  // Do Once
+  useEffect(() => {
+    // setup Refs
+    const canvas = gradientPickerRef.current!
+    gradientPickerContextRef.current = canvas.getContext("2d")!
+  }, [])
 
   const numberToHex = (n: number) => {
     const hex = n.toString(16)
@@ -41,11 +57,41 @@ export const Colorpicker = ({ setColor }: IProps) => {
     setColor(rgbToHex(newRGB))
   }
 
+  const grabColor = ({ nativeEvent }: IMouseEvent) => {
+    const context = gradientPickerContextRef.current!
+    const imageData = context.getImageData(
+      nativeEvent.offsetX,
+      nativeEvent.offsetY,
+      1,
+      1
+    )
+    const rgba = imageData.data
+
+    console.log(rgba)
+
+    let newRGB = { ...RGB, R: rgba[0], G: rgba[1], B: rgba[2] }
+    setRGB(newRGB)
+    setColor(rgbToHex(newRGB))
+  }
+
   return (
     <section className="colorpicker">
       <div className="gradient-picker">
         <p className="label">Colorpicker</p>
-        <div />
+        <canvas
+          id="gradient-picker"
+          width="200"
+          height="200"
+          ref={gradientPickerRef}
+          onClick={grabColor}
+          style={
+            {
+              backgroundImage: `linear-gradient(0deg, black, transparent),
+              linear-gradient(270deg, ${"red"}, transparent),
+              linear-gradient(90deg, white, transparent)`,
+            } as React.CSSProperties
+          }
+        />
       </div>
       <div className="hue-picker">
         <p className="label">Hue</p>

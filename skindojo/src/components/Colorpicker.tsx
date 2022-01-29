@@ -16,30 +16,32 @@ interface IMouseEvent {
 
 export const Colorpicker = ({ setColor }: IProps) => {
   // Refs
-  const gradientPickerRef = useRef<HTMLCanvasElement>(null)
-  const gradientPickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
+  const colorPickerRef = useRef<HTMLCanvasElement>(null)
+  const colorPickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
   const huePickerRef = useRef<HTMLCanvasElement>(null)
   const huePickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
 
   // States
   const [RGB, setRGB] = useState({ R: 255, G: 255, B: 255 })
+  const [isPickingColor, setIsPickingColor] = useState(false)
+  const [isPickingHue, setIsPickingHue] = useState(false)
 
   // Do Once
   useEffect(() => {
     // setup Refs
-    const gradientCvs = gradientPickerRef.current!
-    gradientPickerContextRef.current = gradientCvs.getContext("2d")!
+    const colorCvs = colorPickerRef.current!
+    colorPickerContextRef.current = colorCvs.getContext("2d")!
 
     const hueCvs = huePickerRef.current!
     huePickerContextRef.current = hueCvs.getContext("2d")!
 
     // Draw pickers
-    drawGradientPicker("blue")
+    drawColorPicker("blue")
     drawHuePicker()
   }, [])
 
-  const drawGradientPicker = (color: string) => {
-    const ctx = gradientPickerContextRef.current!
+  const drawColorPicker = (color: string) => {
+    const ctx = colorPickerContextRef.current!
 
     // Draw horizontal colored to white gradient
     const gradientH = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0)
@@ -65,7 +67,7 @@ export const Colorpicker = ({ setColor }: IProps) => {
     const rainbow = ["red", "yellow", "lime", "cyan", "blue", "magenta", "red"]
     rainbow.map((color, index) => {
       const fraction = (1 / (rainbow.length - 1)) * index
-      gradient.addColorStop(fraction, color)
+      return gradient.addColorStop(fraction, color)
     })
 
     // Fill context with gradient
@@ -101,16 +103,11 @@ export const Colorpicker = ({ setColor }: IProps) => {
     setColor(rgbToHex(newRGB))
   }
 
-  const grabColor = ({ nativeEvent }: IMouseEvent) => {
-    const ctx = gradientPickerContextRef.current!
+  const grabColor = (x: number, y: number) => {
+    const ctx = colorPickerContextRef.current!
 
     // Grab pixel data
-    const imgData = ctx.getImageData(
-      nativeEvent.offsetX,
-      nativeEvent.offsetY,
-      1,
-      1
-    )
+    const imgData = ctx.getImageData(x, y, 1, 1)
     const pixel = imgData.data
 
     // Update colors
@@ -119,31 +116,55 @@ export const Colorpicker = ({ setColor }: IProps) => {
     setColor(rgbToHex(newRGB))
   }
 
-  const grabHue = ({ nativeEvent }: IMouseEvent) => {
+  const grabHue = (x: number, y: number) => {
     const ctx = huePickerContextRef.current!
 
     // Grab pixel data
-    const imgData = ctx.getImageData(
-      nativeEvent.offsetX,
-      nativeEvent.offsetY,
-      1,
-      1
-    )
+    const imgData = ctx.getImageData(x, y, 1, 1)
     const pixel = imgData.data
+
     const color = rgbToHex({ R: pixel[0], G: pixel[1], B: pixel[2] })
-    drawGradientPicker(color)
+    drawColorPicker(color)
+  }
+
+  const startPickingColor = ({ nativeEvent }: IMouseEvent) => {
+    setIsPickingColor(true)
+    const { offsetX, offsetY } = nativeEvent
+    grabColor(offsetX, offsetY)
+  }
+
+  const stopPickingColor = () => setIsPickingColor(false)
+
+  const moveColorPickerCursor = ({ nativeEvent }: IMouseEvent) => {
+    const { offsetX, offsetY } = nativeEvent
+    if (isPickingColor) grabColor(offsetX, offsetY)
+  }
+
+  const startPickingHue = ({ nativeEvent }: IMouseEvent) => {
+    setIsPickingHue(true)
+    const { offsetX, offsetY } = nativeEvent
+    grabHue(offsetX, offsetY)
+  }
+
+  const stopPickingHue = () => setIsPickingHue(false)
+
+  const moveHuePickerCursor = ({ nativeEvent }: IMouseEvent) => {
+    const { offsetX, offsetY } = nativeEvent
+    if (isPickingHue) grabHue(offsetX, offsetY)
   }
 
   return (
     <section className="colorpicker">
-      <div className="gradient-picker">
+      <div className="color-picker">
         <p className="label">Colorpicker</p>
         <canvas
-          id="gradient-picker"
+          id="color-picker"
           width="200"
           height="200"
-          ref={gradientPickerRef}
-          onClick={grabColor}
+          ref={colorPickerRef}
+          onMouseDown={startPickingColor}
+          onMouseUp={stopPickingColor}
+          onMouseMove={moveColorPickerCursor}
         />
       </div>
       <div className="hue-picker">
@@ -153,7 +174,9 @@ export const Colorpicker = ({ setColor }: IProps) => {
           width="20"
           height="200"
           ref={huePickerRef}
-          onClick={grabHue}
+          onMouseDown={startPickingHue}
+          onMouseUp={stopPickingHue}
+          onMouseMove={moveHuePickerCursor}
         />
       </div>
       <div className="rgb-picker">

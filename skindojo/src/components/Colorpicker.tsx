@@ -18,6 +18,8 @@ export const Colorpicker = ({ setColor }: IProps) => {
   // Refs
   const gradientPickerRef = useRef<HTMLCanvasElement>(null)
   const gradientPickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
+  const huePickerRef = useRef<HTMLCanvasElement>(null)
+  const huePickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
 
   // States
   const [RGB, setRGB] = useState({ R: 255, G: 255, B: 255 })
@@ -25,17 +27,59 @@ export const Colorpicker = ({ setColor }: IProps) => {
   // Do Once
   useEffect(() => {
     // setup Refs
-    const canvas = gradientPickerRef.current!
-    gradientPickerContextRef.current = canvas.getContext("2d")!
+    const gradientCvs = gradientPickerRef.current!
+    gradientPickerContextRef.current = gradientCvs.getContext("2d")!
+
+    const hueCvs = huePickerRef.current!
+    huePickerContextRef.current = hueCvs.getContext("2d")!
+
+    // Draw pickers
+    drawGradientPicker("blue")
+    drawHuePicker()
   }, [])
 
-  const numberToHex = (n: number) => {
+  const drawGradientPicker = (color: string) => {
+    const ctx = gradientPickerContextRef.current!
+
+    // Draw horizontal colored to white gradient
+    const gradientH = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0)
+    gradientH.addColorStop(0, "white")
+    gradientH.addColorStop(1, color)
+    ctx.fillStyle = gradientH
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+    // Draw vertical black gradient
+    const gradientV = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height)
+    gradientV.addColorStop(0, "transparent")
+    gradientV.addColorStop(1, "black")
+    ctx.fillStyle = gradientV
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  }
+
+  const drawHuePicker = () => {
+    const ctx = huePickerContextRef.current!
+    // Draw rainbow gradient
+    let gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height)
+
+    // Add rainbow colors to gradient
+    const rainbow = ["red", "yellow", "lime", "cyan", "blue", "magenta", "red"]
+    rainbow.map((color, index) => {
+      const fraction = (1 / (rainbow.length - 1)) * index
+      gradient.addColorStop(fraction, color)
+    })
+
+    // Fill context with gradient
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  }
+
+  const toHex = (n: number) => {
     const hex = n.toString(16)
     return hex.length === 1 ? "0" + hex : hex
   }
 
   const rgbToHex = (rgb: IRGB) =>
-    "#" + numberToHex(rgb.R) + numberToHex(rgb.G) + numberToHex(rgb.B)
+    "#" + toHex(rgb.R) + toHex(rgb.G) + toHex(rgb.B)
 
   const updateRGB = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Checks the validity of the pattern passed in the value of the input
@@ -58,20 +102,36 @@ export const Colorpicker = ({ setColor }: IProps) => {
   }
 
   const grabColor = ({ nativeEvent }: IMouseEvent) => {
-    const context = gradientPickerContextRef.current!
-    const imageData = context.getImageData(
+    const ctx = gradientPickerContextRef.current!
+
+    // Grab pixel data
+    const imgData = ctx.getImageData(
       nativeEvent.offsetX,
       nativeEvent.offsetY,
       1,
       1
     )
-    const rgba = imageData.data
+    const pixel = imgData.data
 
-    console.log(rgba)
-
-    let newRGB = { ...RGB, R: rgba[0], G: rgba[1], B: rgba[2] }
+    // Update colors
+    const newRGB = { ...RGB, R: pixel[0], G: pixel[1], B: pixel[2] }
     setRGB(newRGB)
     setColor(rgbToHex(newRGB))
+  }
+
+  const grabHue = ({ nativeEvent }: IMouseEvent) => {
+    const ctx = huePickerContextRef.current!
+
+    // Grab pixel data
+    const imgData = ctx.getImageData(
+      nativeEvent.offsetX,
+      nativeEvent.offsetY,
+      1,
+      1
+    )
+    const pixel = imgData.data
+    const color = rgbToHex({ R: pixel[0], G: pixel[1], B: pixel[2] })
+    drawGradientPicker(color)
   }
 
   return (
@@ -84,18 +144,17 @@ export const Colorpicker = ({ setColor }: IProps) => {
           height="200"
           ref={gradientPickerRef}
           onClick={grabColor}
-          style={
-            {
-              backgroundImage: `linear-gradient(0deg, black, transparent),
-              linear-gradient(270deg, ${"red"}, transparent),
-              linear-gradient(90deg, white, transparent)`,
-            } as React.CSSProperties
-          }
         />
       </div>
       <div className="hue-picker">
         <p className="label">Hue</p>
-        <div />
+        <canvas
+          id="hue-picker"
+          width="20"
+          height="200"
+          ref={huePickerRef}
+          onClick={grabHue}
+        />
       </div>
       <div className="rgb-picker">
         <p className="label">Red</p>

@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from "react"
 import { plotline } from "../res/bresenham"
+import cursorPencil from "../images/pencil_outline_32x32.png"
+import cursorEraser from "../images/eraser_outline_32x32.png"
 
 interface IProps {
   width: number
@@ -99,7 +101,14 @@ export const Canvas = ({ width, height, color }: IProps) => {
 
   return (
     <section className="canvas">
-      <div className="canvasWrapper">
+      <div
+        className="canvasWrapper"
+        style={
+          {
+            cursor: `url(${cursorEraser}) 0 32, auto`,
+          } as React.CSSProperties
+        }
+      >
         <div
           id="cursorOutline"
           style={

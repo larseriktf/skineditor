@@ -45,7 +45,11 @@ export const Canvas = ({ width, height, color, tool }: Props) => {
     const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
-    drawPixel(canvasX, canvasY)
+    if (tool.type === "pencil")
+      drawPixel(canvasX, canvasY)
+    else if (tool.type === "eraser")
+      erasePixel(canvasX, canvasY)
+
     setPrevPoint({ x: canvasX, y: canvasY })
     setIsDrawing(true)
   }
@@ -55,13 +59,13 @@ export const Canvas = ({ width, height, color, tool }: Props) => {
     setPrevPoint({ x: -1, y: -1 })
   }
 
-  const draw = (x: number, y: number) => {
+  const draw = (x: number, y: number, drawFunction: (x: number, y: number) => void ) => {
     // Implement checks to prevent multiple unecessary drawings
-    drawPixel(x, y)
+    drawFunction(x, y)
 
     // Draw a line if previous X and Y are defined
     if (prevPoint.x !== -1 && prevPoint.y !== -1) {
-      plotline({ x: prevPoint.x, y: prevPoint.y }, { x, y }, drawPixel)
+      plotline({ x: prevPoint.x, y: prevPoint.y }, { x, y }, drawFunction)
     }
 
     setPrevPoint({ x: x, y: y })
@@ -71,6 +75,11 @@ export const Canvas = ({ width, height, color, tool }: Props) => {
     const context = contextRef.current!
     context.fillStyle = color
     context.fillRect(x, y, 1, 1)
+  }
+
+  const erasePixel = (x: number, y: number) => {
+    const context = contextRef.current!
+    context.clearRect(x, y, 1, 1)
   }
 
   const getcanvasCoordinates = (x: number, y: number) => {
@@ -92,7 +101,8 @@ export const Canvas = ({ width, height, color, tool }: Props) => {
     })
 
     // Draw
-    if (isDrawing) draw(canvasX, canvasY)
+    if (isDrawing && tool.type === "pencil") draw(canvasX, canvasY, drawPixel)
+    else if (isDrawing && tool.type === "eraser") draw(canvasX, canvasY, erasePixel)
   }
 
   const showOutline = () => setOutlineVisibility("visible")

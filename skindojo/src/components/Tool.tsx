@@ -1,11 +1,18 @@
-interface IProps {
-  imageURL: string
+import { ToolType } from "../res/tools"
+
+type Props = {
+  tool: ToolType
+  setActiveTool: React.Dispatch<React.SetStateAction<ToolType>>
 }
 
-export const Tool = ({ imageURL }: IProps) => {
+export const Tool = ({ tool, setActiveTool }: Props) => {
+  const changeTool = () => {
+    setActiveTool(tool)
+  }
+
   return (
-    <button className="tool">
-      <img src={imageURL} alt="Brush tool" />
+    <button className="tool" onClick={changeTool}>
+      <img src={tool.image} alt="Brush tool" />
     </button>
   )
 }

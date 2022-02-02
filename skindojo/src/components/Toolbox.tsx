@@ -1,19 +1,17 @@
-import move from "../images/move.png"
-import pencil from "../images/pencil.png"
-import pencilColor from "../images/pencil_color_24x24.png"
-import brush from "../images/brush.png"
-import eyedropper from "../images/eyedropper.png"
-import selection from "../images/selection.png"
-import bucket from "../images/bucket.png"
-import eraser from "../images/eraser.png"
-import eraserColor from "../images/eraser_color_24x24.png"
 import { Tool } from "./Tool"
+import { ToolType } from "../res/tools"
 
-export const Toolbox = () => {
+type Props = {
+  tools: ToolType[]
+  setActiveTool: React.Dispatch<React.SetStateAction<ToolType>>
+}
+
+export const Toolbox = ({ tools, setActiveTool }: Props) => {
   return (
     <section className="toolbox">
-      <Tool imageURL={pencilColor} />
-      <Tool imageURL={eraserColor} />
+      {tools.map((tool, index) => (
+        <Tool tool={tool} setActiveTool={setActiveTool} key={index} />
+      ))}
     </section>
   )
 }

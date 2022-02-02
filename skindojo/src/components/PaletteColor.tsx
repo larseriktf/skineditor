@@ -1,4 +1,4 @@
-interface IProps {
+type Props = {
   color: string
   setColor: React.Dispatch<React.SetStateAction<string>>
   updateCustomColors: (color: string) => void
@@ -8,7 +8,8 @@ export const PaletteColor = ({
   color,
   setColor,
   updateCustomColors,
-}: IProps) => {
+}: Props) => {
+  
   const updateColor = () => {
     setColor(color)
     updateCustomColors(color)

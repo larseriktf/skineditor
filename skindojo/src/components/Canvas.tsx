@@ -1,19 +1,19 @@
 import { useRef, useState, useEffect } from "react"
 import { plotline } from "../res/bresenham"
-import cursorPencil from "../images/pencil_outline_24x24.png"
-import cursorEraser from "../images/eraser_outline_24x24.png"
+import { ToolType } from "../res/tools"
 
-interface IProps {
+type Props = {
   width: number
   height: number
   color: string
+  tool: ToolType
 }
 
-interface IEvents {
+type Events = {
   nativeEvent: MouseEvent
 }
 
-export const Canvas = ({ width, height, color }: IProps) => {
+export const Canvas = ({ width, height, color, tool }: Props) => {
   // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
@@ -40,7 +40,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
   }, [height, width])
 
   // Functions
-  const startDrawing = ({ nativeEvent }: IEvents) => {
+  const startDrawing = ({ nativeEvent }: Events) => {
     const { offsetX, offsetY } = nativeEvent
     const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
 
@@ -81,7 +81,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
     return { canvasX, canvasY }
   }
 
-  const moveCursor = ({ nativeEvent }: IEvents) => {
+  const moveCursor = ({ nativeEvent }: Events) => {
     const { offsetX, offsetY } = nativeEvent
     const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
 
@@ -105,7 +105,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
         className="canvasWrapper"
         style={
           {
-            cursor: `url(${cursorPencil}) 0 32, auto`,
+            cursor: `url(${tool.cursor}) 0 32, auto`,
           } as React.CSSProperties
         }
       >

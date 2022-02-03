@@ -1,4 +1,18 @@
-import menuItems from "./menu.json"
+export const menuItems = [
+  {
+      "name": "File",
+      "items": ["New File", "Open File", "Save", "Save As"]
+  },
+  {
+      "name": "View",
+      "items": ["Toggle Grid", "Toggle Overlay"]
+  },
+  {
+      "name": "Settings",
+      "items": []
+  }
+]
+
 
 export const getMenuAction = (item: string) => {
   let func = () => {

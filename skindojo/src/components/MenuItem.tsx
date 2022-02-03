@@ -1,43 +1,39 @@
 import { useState } from "react"
+import { getMenuAction } from "../res/menu"
 import { MenuSubItem } from "./MenuSubItem"
 
 type Props = {
   name: string
-  items: string[]
+  items: string[],
+  selected: boolean,
+  setSelectedItem: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export const MenuItem = ({ name, items }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+export const MenuItem = ({ name, items, selected, setSelectedItem }: Props) => {
+  const select = () => setSelectedItem(name)
 
-  const expand = () => {
-    setIsExpanded(true)
-  }
+  const deselect = () => setSelectedItem(null)
 
-  const minimize = () => {
-    setIsExpanded(false)
-  }
-
-  const toggleExpand = () => {
-    if (isExpanded) minimize()
-    else expand()
+  const toggleSelect = () => {
+    if (selected) deselect()
+    else select()
   }
 
   return (
     <>
-      <button className="menu-bar-button" onClick={toggleExpand}>
+      <div className="menu-bar-item" onClick={toggleSelect}>
         {name}
-      </button>
+      </div>
       <ul
         className="drop-down"
         style={
           {
-            visibility: isExpanded ? "visible" : "hidden",
+            visibility: selected ? "visible" : "hidden",
           } as React.CSSProperties
         }
-        onMouseLeave={minimize}
       >
         {items.map((item, index) => (
-          <MenuSubItem item={item} key={index} />
+          <MenuSubItem item={item} action={getMenuAction(item)} key={index} />
         ))}
       </ul>
     </>

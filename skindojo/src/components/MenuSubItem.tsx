@@ -1,14 +1,8 @@
-import { getMenuAction } from "../res/menu"
-
 type Props = {
   item: string
+  action: () => void
 }
 
-export const MenuSubItem = ({item}: Props) => {
-  const clickItem = () => {
-    const action = getMenuAction(item)
-    action()
-  }
-
-  return <li onClick={clickItem}>{item}</li>;
-};
+export const MenuSubItem = ({ item, action }: Props) => {
+  return <li onClick={action}><div className="menu-bar-subitem">{item}</div></li>
+}

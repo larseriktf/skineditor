@@ -1,13 +1,22 @@
-import menuItems from "../res/menu.json"
+import { menuItems } from "../res/menu"
 import { MenuItem } from "./MenuItem"
+import { useState } from "react"
 
 export const Menubar = () => {
+  const [selectedItem, setSelectedItem] = useState<string | null>(null)
+
   return (
     <header className="menu-bar">
-      <ul className="menu-bar-list">
+      <div className="menu-bar-logo"></div>
+      <ul>
         {menuItems.map((menuItem, index) => (
-          <li>
-            <MenuItem name={menuItem.name} items={menuItem.items} key={index} />
+          <li key={index}>
+            <MenuItem
+              name={menuItem.name}
+              items={menuItem.items}
+              selected={selectedItem === menuItem.name}
+              setSelectedItem={setSelectedItem}
+            />
           </li>
         ))}
       </ul>

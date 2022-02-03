@@ -1,6 +1,8 @@
 import { menuItems } from "../res/menu"
 import { MenuItem } from "./MenuItem"
 import { useState } from "react"
+
+// Great custom hook by zhaluza :)
 import { useDetectClickOutside } from "react-detect-click-outside"
 
 export const Menubar = () => {

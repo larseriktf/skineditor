@@ -1,12 +1,20 @@
 import { menuItems } from "../res/menu"
 import { MenuItem } from "./MenuItem"
 import { useState } from "react"
+import { useDetectClickOutside } from "react-detect-click-outside"
 
 export const Menubar = () => {
+  // Refs
+  const ref = useDetectClickOutside({
+    onTriggered: () => setIsExpanded(false),
+  })
+
+  // States
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <header className="menu-bar">
+    <header className="menu-bar" ref={ref}>
       <div className="menu-bar-logo"></div>
       <ul>
         {menuItems.map((menuItem, index) => (
@@ -14,7 +22,9 @@ export const Menubar = () => {
             <MenuItem
               name={menuItem.name}
               items={menuItem.items}
-              selected={selectedItem === menuItem.name}
+              selected={selectedItem === menuItem.name && isExpanded}
+              isExpanded={isExpanded}
+              setIsExpanded={setIsExpanded}
               setSelectedItem={setSelectedItem}
             />
           </li>

@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { getMenuAction } from "../res/menu"
 import { MenuSubItem } from "./MenuSubItem"
 
@@ -6,22 +5,22 @@ type Props = {
   name: string
   items: string[],
   selected: boolean,
+  isExpanded: boolean;
+  setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>,
   setSelectedItem: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export const MenuItem = ({ name, items, selected, setSelectedItem }: Props) => {
+export const MenuItem = ({ name, items, selected, isExpanded, setIsExpanded, setSelectedItem }: Props) => {
   const select = () => setSelectedItem(name)
 
-  const deselect = () => setSelectedItem(null)
-
-  const toggleSelect = () => {
-    if (selected) deselect()
-    else select()
+  const toggleExpand = () => {
+    if (isExpanded) setIsExpanded(false)
+    else setIsExpanded(true)
   }
 
   return (
     <>
-      <div className="menu-bar-item" onClick={toggleSelect}>
+      <div className="menu-bar-item" onMouseOver={select} onClick={toggleExpand}>
         {name}
       </div>
       <ul

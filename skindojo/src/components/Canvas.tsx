@@ -1,11 +1,11 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useContext } from "react"
 import { plotline } from "../res/bresenham"
 import { ToolType } from "../res/tools"
+import { ColorContext } from "./ColorContext"
 
 type Props = {
   width: number
   height: number
-  color: string
   tool: ToolType
 }
 
@@ -13,7 +13,9 @@ type Events = {
   nativeEvent: MouseEvent
 }
 
-export const Canvas = ({ width, height, color, tool }: Props) => {
+export const Canvas = ({ width, height, tool }: Props) => {
+  const color = useContext(ColorContext).color
+
   // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)

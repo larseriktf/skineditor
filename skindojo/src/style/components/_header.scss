@@ -4,6 +4,7 @@
     background: $primary;
     overflow: hidden;
     grid-area: menu;
+    user-select: none;
 
     > ul {
         margin: 0;
@@ -22,6 +23,10 @@
     color: darken($secondary, 10%);
 
     &:hover {
+        background: lighten($primary, 10%);
+    }
+
+    &.selected {
         background: lighten($primary, 10%);
     }
 }

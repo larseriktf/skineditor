@@ -8,7 +8,7 @@ import { tools } from "../res/tools"
 import { ColorContext } from "./ColorContext"
 
 export const Skineditor = () => {
-  const [color, setColor] = useState("blue")
+  const [color, setColor] = useState("white")
   const [activeTool, setActiveTool] = useState(tools[0])
 
   // Persistant data

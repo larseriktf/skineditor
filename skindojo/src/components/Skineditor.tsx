@@ -1,13 +1,15 @@
-import { useEffect } from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Menubar } from "./Menubar"
 import { Toolbox } from "./Toolbox"
 import { Canvas } from "./Canvas"
 import { Viewbox } from "./Viewbox"
 import { Color } from "./Color"
+import { tools } from "../res/tools"
+import { ColorContext } from "./ColorContext"
 
 export const Skineditor = () => {
   const [color, setColor] = useState("white")
+  const [activeTool, setActiveTool] = useState(tools[0])
 
   // Persistant data
   useEffect(() => {
@@ -23,11 +25,13 @@ export const Skineditor = () => {
 
   return (
     <div id="main-grid">
-      <Menubar />
-      <Toolbox />
-      <Canvas width={32} height={32} color={color} />
-      <Viewbox />
-      <Color color={color} setColor={setColor} />
+      <ColorContext.Provider value={{ color, setColor }}>
+        <Menubar />
+        <Toolbox tools={tools} setActiveTool={setActiveTool} />
+        <Canvas width={32} height={32} tool={activeTool} />
+        <Viewbox />
+        <Color />
+      </ColorContext.Provider>
     </div>
   )
 }

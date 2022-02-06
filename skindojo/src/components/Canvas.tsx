@@ -1,19 +1,21 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useContext } from "react"
 import { plotline } from "../res/bresenham"
-import cursorPencil from "../images/pencil_outline_24x24.png"
-import cursorEraser from "../images/eraser_outline_24x24.png"
+import { ToolType } from "../res/tools"
+import { ColorContext } from "./ColorContext"
 
-interface IProps {
+type Props = {
   width: number
   height: number
-  color: string
+  tool: ToolType
 }
 
-interface IEvents {
+type Events = {
   nativeEvent: MouseEvent
 }
 
-export const Canvas = ({ width, height, color }: IProps) => {
+export const Canvas = ({ width, height, tool }: Props) => {
+  const color = useContext(ColorContext).color
+
   // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
@@ -40,12 +42,16 @@ export const Canvas = ({ width, height, color }: IProps) => {
   }, [height, width])
 
   // Functions
-  const startDrawing = ({ nativeEvent }: IEvents) => {
+  const startDrawing = ({ nativeEvent }: Events) => {
     const { offsetX, offsetY } = nativeEvent
     const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
-    drawPixel(canvasX, canvasY)
+    if (tool.type === "pencil")
+      drawPixel(canvasX, canvasY)
+    else if (tool.type === "eraser")
+      erasePixel(canvasX, canvasY)
+
     setPrevPoint({ x: canvasX, y: canvasY })
     setIsDrawing(true)
   }
@@ -55,13 +61,13 @@ export const Canvas = ({ width, height, color }: IProps) => {
     setPrevPoint({ x: -1, y: -1 })
   }
 
-  const draw = (x: number, y: number) => {
+  const draw = (x: number, y: number, drawFunction: (x: number, y: number) => void ) => {
     // Implement checks to prevent multiple unecessary drawings
-    drawPixel(x, y)
+    drawFunction(x, y)
 
     // Draw a line if previous X and Y are defined
     if (prevPoint.x !== -1 && prevPoint.y !== -1) {
-      plotline({ x: prevPoint.x, y: prevPoint.y }, { x, y }, drawPixel)
+      plotline({ x: prevPoint.x, y: prevPoint.y }, { x, y }, drawFunction)
     }
 
     setPrevPoint({ x: x, y: y })
@@ -73,6 +79,11 @@ export const Canvas = ({ width, height, color }: IProps) => {
     context.fillRect(x, y, 1, 1)
   }
 
+  const erasePixel = (x: number, y: number) => {
+    const context = contextRef.current!
+    context.clearRect(x, y, 1, 1)
+  }
+
   const getcanvasCoordinates = (x: number, y: number) => {
     const canvas = canvasRef.current!
     const canvasX = Math.floor((canvas.width * x) / canvas.clientWidth)
@@ -81,7 +92,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
     return { canvasX, canvasY }
   }
 
-  const moveCursor = ({ nativeEvent }: IEvents) => {
+  const moveCursor = ({ nativeEvent }: Events) => {
     const { offsetX, offsetY } = nativeEvent
     const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
 
@@ -92,7 +103,8 @@ export const Canvas = ({ width, height, color }: IProps) => {
     })
 
     // Draw
-    if (isDrawing) draw(canvasX, canvasY)
+    if (isDrawing && tool.type === "pencil") draw(canvasX, canvasY, drawPixel)
+    else if (isDrawing && tool.type === "eraser") draw(canvasX, canvasY, erasePixel)
   }
 
   const showOutline = () => setOutlineVisibility("visible")
@@ -105,7 +117,7 @@ export const Canvas = ({ width, height, color }: IProps) => {
         className="canvasWrapper"
         style={
           {
-            cursor: `url(${cursorPencil}) 0 32, auto`,
+            cursor: `url(${tool.cursor}) 0 32, auto`,
           } as React.CSSProperties
         }
       >

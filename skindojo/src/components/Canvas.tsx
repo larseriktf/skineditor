@@ -28,12 +28,12 @@ export const Canvas = ({ width, height, tool }: Props) => {
   // Do Once
   useEffect(() => {
     // setup Refs
-    const canvas = cvsRef.current
-    ctxRef.current = canvas.getContext("2d")!
+    const cvs = cvsRef.current
+    ctxRef.current = cvs.getContext("2d")!
 
     setOutlineSize({
-      width: canvas.clientWidth / canvas.width,
-      height: canvas.clientHeight / canvas.height,
+      width: cvs.clientWidth / cvs.width,
+      height: cvs.clientHeight / cvs.height,
     })
 
     hideOutline()
@@ -72,14 +72,14 @@ export const Canvas = ({ width, height, tool }: Props) => {
   }
 
   const drawPixel = (x: number, y: number) => {
-    const context = ctxRef.current!
-    context.fillStyle = color
-    context.fillRect(x, y, 1, 1)
+    const ctx = ctxRef.current!
+    ctx.fillStyle = color
+    ctx.fillRect(x, y, 1, 1)
   }
 
   const erasePixel = (x: number, y: number) => {
-    const context = ctxRef.current!
-    context.clearRect(x, y, 1, 1)
+    const ctx = ctxRef.current!
+    ctx.clearRect(x, y, 1, 1)
   }
 
   const getCanvasCoordinates = (x: number, y: number) => {

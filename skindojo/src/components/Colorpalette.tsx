@@ -6,7 +6,7 @@ import { ColorContext } from "./ColorContext"
 
 export const Colorpalette = () => {
   const [colorsCustom, setColorsCustom] = useState(customColors)
-  const { color, setColor } = useContext(ColorContext)
+  const { setColor } = useContext(ColorContext)
 
   // Persistant data
   useEffect(() => {

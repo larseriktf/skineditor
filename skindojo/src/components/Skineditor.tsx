@@ -7,7 +7,7 @@ import { Color } from "./Color"
 import { tools } from "../res/tools"
 import { ColorContext } from "./ColorContext"
 
-export const Skineditor = () => {
+export const SkinEditor = () => {
   const [color, setColor] = useState("white")
   const [activeTool, setActiveTool] = useState(tools[0])
 

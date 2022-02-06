@@ -12,23 +12,23 @@ interface IMouseEvent {
 }
 
 export const Colorpicker = () => {
-  const colorPickerRef = useRef<HTMLCanvasElement>(null)
-  const colorPickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
-  const huePickerRef = useRef<HTMLCanvasElement>(null)
-  const huePickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
+  const colorPickerRef = useRef<HTMLCanvasElement>(null!)
+  const colorPickerCtxRef = useRef<CanvasRenderingContext2D | null>(null)
+  const huePickerRef = useRef<HTMLCanvasElement>(null!)
+  const huePickerCtxRef = useRef<CanvasRenderingContext2D | null>(null)
 
   const [RGB, setRGB] = useState({ R: 255, G: 255, B: 255 })
   const [isPickingColor, setIsPickingColor] = useState(false)
   const [isPickingHue, setIsPickingHue] = useState(false)
-  const { color, setColor } = useContext(ColorContext)
+  const { setColor } = useContext(ColorContext)
 
   // Do Once
   useEffect(() => {
-    const colorCvs = colorPickerRef.current!
-    colorPickerContextRef.current = colorCvs.getContext("2d")!
+    const colorCvs = colorPickerRef.current
+    colorPickerCtxRef.current = colorCvs.getContext("2d")!
 
-    const hueCvs = huePickerRef.current!
-    huePickerContextRef.current = hueCvs.getContext("2d")!
+    const hueCvs = huePickerRef.current
+    huePickerCtxRef.current = hueCvs.getContext("2d")!
 
     // Draw pickers
     drawColorPicker("blue")
@@ -36,7 +36,7 @@ export const Colorpicker = () => {
   }, [])
 
   const drawColorPicker = (color: string) => {
-    const ctx = colorPickerContextRef.current!
+    const ctx = colorPickerCtxRef.current!
 
     // Draw horizontal colored to white gradient
     const gradientH = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0)
@@ -54,11 +54,9 @@ export const Colorpicker = () => {
   }
 
   const drawHuePicker = () => {
-    const ctx = huePickerContextRef.current!
-    // Draw rainbow gradient
+    const ctx = huePickerCtxRef.current!
     let gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height)
 
-    // Add rainbow colors to gradient
     const rainbow = ["red", "yellow", "lime", "cyan", "blue", "magenta", "red"]
     rainbow.map((color, index) => {
       const fraction = (1 / (rainbow.length - 1)) * index
@@ -99,7 +97,7 @@ export const Colorpicker = () => {
   }
 
   const grabColor = (x: number, y: number) => {
-    const ctx = colorPickerContextRef.current!
+    const ctx = colorPickerCtxRef.current!
 
     // Grab pixel data
     const imgData = ctx.getImageData(x, y, 1, 1)
@@ -112,7 +110,7 @@ export const Colorpicker = () => {
   }
 
   const grabHue = (x: number, y: number) => {
-    const ctx = huePickerContextRef.current!
+    const ctx = huePickerCtxRef.current!
 
     // Grab pixel data
     const imgData = ctx.getImageData(x, y, 1, 1)

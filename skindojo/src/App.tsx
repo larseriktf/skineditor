@@ -1,7 +1,7 @@
-import { Skineditor } from "./components/Skineditor"
+import { SkinEditor } from "./components/SkinEditor"
 
 function App() {
-  return <Skineditor />
+  return <SkinEditor />
 }
 
 export default App

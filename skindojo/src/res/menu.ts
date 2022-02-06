@@ -24,9 +24,14 @@ export const getMenuAction = (item: string) => {
   } else if (item === "Open File") {
   } else if (item === "Save") {
   } else if (item === "Save As") {
+    func = () => saveCanvasToFile
   } else if (item === "Toggle Grid") {
   } else if (item === "Toggle Overlay") {
   }
 
   return func
+}
+
+const saveCanvasToFile = () => {
+
 }

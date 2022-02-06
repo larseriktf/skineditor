@@ -1,8 +1,9 @@
-interface IProps {
-  color: string
-}
+import { useContext } from "react"
+import { ColorContext } from "./ColorContext"
 
-export const SelectedColor = ({ color }: IProps) => {
+export const SelectedColor = () => {
+  const { color } = useContext(ColorContext)
+
   return (
     <section className="selected-color">
       <p className="label">Selected Color</p>

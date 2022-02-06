@@ -14,13 +14,11 @@ type Events = {
 }
 
 export const Canvas = ({ width, height, tool }: Props) => {
-  const color = useContext(ColorContext).color
+  const { color } = useContext(ColorContext)
+  
+  const cvsRef = useRef<HTMLCanvasElement>(null!)
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
 
-  // Refs
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null)
-
-  // States
   const [isDrawing, setIsDrawing] = useState(false)
   const [outlineVisibility, setOutlineVisibility] = useState("hidden")
   const [outlineSize, setOutlineSize] = useState({ width: 10, height: 10 })
@@ -30,8 +28,8 @@ export const Canvas = ({ width, height, tool }: Props) => {
   // Do Once
   useEffect(() => {
     // setup Refs
-    const canvas = canvasRef.current!
-    contextRef.current = canvas.getContext("2d")!
+    const canvas = cvsRef.current
+    ctxRef.current = canvas.getContext("2d")!
 
     setOutlineSize({
       width: canvas.clientWidth / canvas.width,
@@ -44,7 +42,7 @@ export const Canvas = ({ width, height, tool }: Props) => {
   // Functions
   const startDrawing = ({ nativeEvent }: Events) => {
     const { offsetX, offsetY } = nativeEvent
-    const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
+    const { canvasX, canvasY } = getCanvasCoordinates(offsetX, offsetY)
 
     // Draw initial pixel
     if (tool.type === "pencil")
@@ -74,18 +72,18 @@ export const Canvas = ({ width, height, tool }: Props) => {
   }
 
   const drawPixel = (x: number, y: number) => {
-    const context = contextRef.current!
+    const context = ctxRef.current!
     context.fillStyle = color
     context.fillRect(x, y, 1, 1)
   }
 
   const erasePixel = (x: number, y: number) => {
-    const context = contextRef.current!
+    const context = ctxRef.current!
     context.clearRect(x, y, 1, 1)
   }
 
-  const getcanvasCoordinates = (x: number, y: number) => {
-    const canvas = canvasRef.current!
+  const getCanvasCoordinates = (x: number, y: number) => {
+    const canvas = cvsRef.current!
     const canvasX = Math.floor((canvas.width * x) / canvas.clientWidth)
     const canvasY = Math.floor((canvas.height * y) / canvas.clientHeight)
 
@@ -94,7 +92,7 @@ export const Canvas = ({ width, height, tool }: Props) => {
 
   const moveCursor = ({ nativeEvent }: Events) => {
     const { offsetX, offsetY } = nativeEvent
-    const { canvasX, canvasY } = getcanvasCoordinates(offsetX, offsetY)
+    const { canvasX, canvasY } = getCanvasCoordinates(offsetX, offsetY)
 
     showOutline()
     setOutlineCoords({
@@ -137,7 +135,7 @@ export const Canvas = ({ width, height, tool }: Props) => {
           id="canv"
           width={width}
           height={height}
-          ref={canvasRef}
+          ref={cvsRef}
           onMouseDown={startDrawing}
           onMouseUp={stopDrawing}
           onMouseMove={moveCursor}

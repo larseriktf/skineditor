@@ -1,8 +1,5 @@
-import { useState, useEffect, useRef } from "react"
-
-interface IProps {
-  setColor: React.Dispatch<React.SetStateAction<string>>
-}
+import { useState, useEffect, useRef, useContext } from "react"
+import { ColorContext } from "./ColorContext"
 
 interface IRGB {
   R: number
@@ -14,21 +11,19 @@ interface IMouseEvent {
   nativeEvent: MouseEvent
 }
 
-export const Colorpicker = ({ setColor }: IProps) => {
-  // Refs
+export const Colorpicker = () => {
   const colorPickerRef = useRef<HTMLCanvasElement>(null)
   const colorPickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
   const huePickerRef = useRef<HTMLCanvasElement>(null)
   const huePickerContextRef = useRef<CanvasRenderingContext2D | null>(null)
 
-  // States
   const [RGB, setRGB] = useState({ R: 255, G: 255, B: 255 })
   const [isPickingColor, setIsPickingColor] = useState(false)
   const [isPickingHue, setIsPickingHue] = useState(false)
+  const { color, setColor } = useContext(ColorContext)
 
   // Do Once
   useEffect(() => {
-    // setup Refs
     const colorCvs = colorPickerRef.current!
     colorPickerContextRef.current = colorCvs.getContext("2d")!
 

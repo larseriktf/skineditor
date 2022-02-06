@@ -6,12 +6,10 @@ import { useState } from "react"
 import { useDetectClickOutside } from "react-detect-click-outside"
 
 export const Menubar = () => {
-  // Refs
   const ref = useDetectClickOutside({
     onTriggered: () => setIsExpanded(false),
   })
 
-  // States
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
   const [isExpanded, setIsExpanded] = useState(false)
 

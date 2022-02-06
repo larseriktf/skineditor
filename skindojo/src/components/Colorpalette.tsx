@@ -1,15 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { PaletteColor } from "./PaletteColor"
 import colorsBasic from "../res/colors_basic.json"
 import customColors from "../res/colors_custom.json"
+import { ColorContext } from "./ColorContext"
 
-interface IProps {
-  setColor: React.Dispatch<React.SetStateAction<string>>
-}
-
-export const Colorpalette = ({ setColor }: IProps) => {
-  // States
+export const Colorpalette = () => {
   const [colorsCustom, setColorsCustom] = useState(customColors)
+  const { color, setColor } = useContext(ColorContext)
 
   // Persistant data
   useEffect(() => {

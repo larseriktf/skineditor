@@ -10,6 +10,7 @@ import { ColorContext } from "./ColorContext"
 export const SkinEditor = () => {
   const [color, setColor] = useState("white")
   const [activeTool, setActiveTool] = useState(tools[0])
+  const [cvs, setCvs] = useState<HTMLCanvasElement>(new HTMLCanvasElement())
 
   // Persistant data
   useEffect(() => {
@@ -26,9 +27,9 @@ export const SkinEditor = () => {
   return (
     <div id="main-grid">
       <ColorContext.Provider value={{ color, setColor }}>
-        <Menubar />
+        <Menubar cvs={cvs} />
         <Toolbox tools={tools} setActiveTool={setActiveTool} />
-        <Canvas width={32} height={32} tool={activeTool} />
+        <Canvas width={32} height={32} tool={activeTool} setCvs={setCvs} />
         <Viewbox />
         <Color />
       </ColorContext.Provider>

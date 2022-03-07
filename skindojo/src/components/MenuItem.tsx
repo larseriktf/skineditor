@@ -1,5 +1,4 @@
 import { getMenuAction } from "../res/menu"
-import { MenuSubItem } from "./MenuSubItem"
 
 type Props = {
   name: string
@@ -8,6 +7,7 @@ type Props = {
   isExpanded: boolean
   setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedItem: React.Dispatch<React.SetStateAction<string | null>>
+  cvs: HTMLCanvasElement
 }
 
 export const MenuItem = ({
@@ -17,6 +17,7 @@ export const MenuItem = ({
   isExpanded,
   setIsExpanded,
   setSelectedItem,
+  cvs
 }: Props) => {
   const select = () => setSelectedItem(name)
 
@@ -43,7 +44,9 @@ export const MenuItem = ({
         }
       >
         {items.map((item, index) => (
-          <MenuSubItem item={item} action={getMenuAction(item)} key={index} />
+          <li onClick={getMenuAction(item, cvs)} key={index}>
+            <div className="menu-bar-subitem">{item}</div>
+          </li>
         ))}
       </ul>
     </>

@@ -5,7 +5,11 @@ import { useState } from "react"
 // Great custom hook by zhaluza :)
 import { useDetectClickOutside } from "react-detect-click-outside"
 
-export const Menubar = () => {
+type Props = {
+  cvs: HTMLCanvasElement
+}
+
+export const Menubar = ({cvs}: Props) => {
   const ref = useDetectClickOutside({
     onTriggered: () => setIsExpanded(false),
   })
@@ -26,6 +30,7 @@ export const Menubar = () => {
               isExpanded={isExpanded}
               setIsExpanded={setIsExpanded}
               setSelectedItem={setSelectedItem}
+              cvs={cvs}
             />
           </li>
         ))}

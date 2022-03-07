@@ -7,13 +7,14 @@ type Props = {
   width: number
   height: number
   tool: ToolType
+  setCvs: React.Dispatch<React.SetStateAction<HTMLCanvasElement>>
 }
 
 type Events = {
   nativeEvent: MouseEvent
 }
 
-export const Canvas = ({ width, height, tool }: Props) => {
+export const Canvas = ({ width, height, tool, setCvs }: Props) => {
   const { color } = useContext(ColorContext)
   
   const cvsRef = useRef<HTMLCanvasElement>(null!)
@@ -25,9 +26,7 @@ export const Canvas = ({ width, height, tool }: Props) => {
   const [outlineCoords, setOutlineCoords] = useState({ x: 0, y: 0 })
   const [prevPoint, setPrevPoint] = useState({ x: -1, y: -1 })
 
-  // Do Once
   useEffect(() => {
-    // setup Refs
     const cvs = cvsRef.current
     ctxRef.current = cvs.getContext("2d")!
 
@@ -56,6 +55,7 @@ export const Canvas = ({ width, height, tool }: Props) => {
 
   const stopDrawing = () => {
     setIsDrawing(false)
+    setCvs(cvsRef.current)
     setPrevPoint({ x: -1, y: -1 })
   }
 

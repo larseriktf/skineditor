@@ -1,20 +1,19 @@
 export const menuItems = [
   {
-      "name": "File",
-      "items": ["New File", "Open File", "Save", "Save As"]
+    name: "File",
+    items: ["New File", "Open File", "Save", "Save As"],
   },
   {
-      "name": "View",
-      "items": ["Toggle Grid", "Toggle Overlay"]
+    name: "View",
+    items: ["Toggle Grid", "Toggle Overlay"],
   },
   {
-      "name": "Settings",
-      "items": []
-  }
+    name: "Settings",
+    items: [],
+  },
 ]
 
-
-export const getMenuAction = (item: string) => {
+export const getMenuAction = (item: string, cvs: HTMLCanvasElement) => {
   let func = () => {
     console.log("Hello There")
   }
@@ -24,7 +23,7 @@ export const getMenuAction = (item: string) => {
   } else if (item === "Open File") {
   } else if (item === "Save") {
   } else if (item === "Save As") {
-    func = () => saveCanvasToFile
+    func = () => saveCanvasToFile(cvs)
   } else if (item === "Toggle Grid") {
   } else if (item === "Toggle Overlay") {
   }
@@ -32,6 +31,8 @@ export const getMenuAction = (item: string) => {
   return func
 }
 
-const saveCanvasToFile = () => {
-
+const saveCanvasToFile = (cvs: HTMLCanvasElement) => {
+  const dataURL = cvs.toDataURL("image/png")
+  const newTab = window.open('about:blank','image from canvas');
+  newTab?.document.write("<img src='" + dataURL + "' alt='from canvas'/>");
 }

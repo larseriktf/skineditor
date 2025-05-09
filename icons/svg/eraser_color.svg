@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="4.9609389mm"
+   height="4.7625022mm"
+   viewBox="0 0 4.9609389 4.7625022"
+   version="1.1"
+   id="svg6523"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20, custom)"
+   sodipodi:docname="eraser_color.svg"
+   inkscape:export-filename="/home/lef/Documents/skineditor/icons/eraser_color.png"
+   inkscape:export-xdpi="327.6799"
+   inkscape:export-ydpi="327.6799"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6525"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="16"
+     inkscape:cx="9.9375"
+     inkscape:cy="15.21875"
+     inkscape:window-width="1920"
+     inkscape:window-height="1020"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid6584"
+       originx="-83.674476"
+       originy="-124.35417" />
+  </sodipodi:namedview>
+  <defs
+     id="defs6520" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-83.674478,-124.35417)">
+    <path
+       style="color:#000000;fill:#ff8caf;fill-opacity:1;stroke-width:3.77953;-inkscape-stroke:none"
+       d="m 319,478.00001 -2,2 c -1,1 -1,3 0,4 l 3,3 c 1,1 1,1 4,1 l 3,-2 z"
+       transform="scale(0.26458333)"
+       id="path15730" />
+    <path
+       style="color:#000000;fill:#feffff;fill-opacity:1;stroke-width:3.77953;-inkscape-stroke:none"
+       d="m 327,470.00001 -7,7 8,8 7,-7 z"
+       transform="scale(0.26458333)"
+       id="path6619" />
+    <path
+       style="color:#000000;fill:#ff8caf;fill-opacity:1;-inkscape-stroke:none"
+       d="m 85.725,128.5875 v 0.52917 h 2.910417 v -0.52917 z"
+       id="path9770"
+       sodipodi:nodetypes="ccccc" />
+  </g>
+</svg>

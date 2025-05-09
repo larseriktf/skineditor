@@ -1,0 +1,24 @@
+.toolbox {
+    background: $primary;
+    grid-area: toolbox;
+}
+
+.tool {
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    display: block;
+    border: 0;
+    background: transparent;
+    padding: 15px;
+
+    &:hover {
+        background: lighten($primary, 10%);
+        cursor: pointer;
+    }
+
+    > img {
+        width: 100%;
+        height: 100%;
+    }
+}
